@@ -60,19 +60,20 @@ https://discord.com/oauth2/authorize?client_id=[CLIENT_ID]&scope=[SCOPE]
   |-----------------------------|---------------------------------------------------------------------------------------------------------------|
   | Name                        | I chose `discord-app`, but go nuts.                                                                           |
   | Region                      | Choose the [region](https://cloud.google.com/about/locations) closest to your users                           |
-  | Trigger                     | Choose **HTTP**, and **Allow unauthenticated invocations**. Take note of the Trigger URL.                     |
+  | Trigger                     | Choose **Allow unauthenticated invocations**. Take note of the Trigger URL.                     |
   | Advanced: Memory Allocation | 128MiB                                                                                                        |
   | Advanced: Timeout           | 60                                                                                                            |
-  | Advanced: Service Account   | App Engine Default service account                                                                            |
+  | Advanced: Service Account   | Default service account                                                                            |
   | Environment Variables       | [*see below*](#environment-variables)                                                                        |
 
 3. Press `Next`. On the `Source` page, you'll need to copy the source code files. I recommend just using the file editor. Delete all the default files, and create the following, copying the contents.
   - package.json (edit the `main` property to be `cloud-functions.js`)
   - cloud-functions.js
   - commands/servers.js
-4. Press Deploy! Wait for the function to go green (hopefully :) ) and then copy the Trigger URL. At this point, if you go to your discord server and type a `/`, you should see the autocomplete prompt for your commands appear. If you did not pass the ID of the Guild (Discord Server), then there is a 1 hour delay in updating commands.
-5. Go back to the Discord developer portal and paste the Trigger URL in the `INTERACTIONS ENDPOINT URL` field. If the Function started correctly, then discord will accept the URL when you save.
-6. Test your commands!
+4. Set the **Entry point** to `interactions`.
+5. Press Deploy! Wait for the function to go green (hopefully :) ) and then copy the Trigger URL. At this point, if you go to your discord server and type a `/`, you should see the autocomplete prompt for your commands appear. If you did not pass the ID of the Guild (Discord Server), then there is a 1 hour delay in updating commands.
+6. Go back to the Discord developer portal and paste the Trigger URL in the `INTERACTIONS ENDPOINT URL` field. If the Function started correctly, then discord will accept the URL when you save.
+7. Test your commands!
 
 ## Google Cloud Run
 1. Ensure you have enabled [Google Container Registry](https://console.cloud.google.com/gcr) for your project, and you have [gcloud installed](https://cloud.google.com/sdk/docs/install). Make sure you have [Docker installed](https://docs.docker.com/get-docker/) and its started.
@@ -112,7 +113,6 @@ This Application requires the following variables at runtime:
   | DISCORD_PUBLIC_KEY          | The Public Key from the Discord developer portal                                                                |
   | DISCORD_TOKEN               | The Client Secret from the Discord developer portal                                                             |
   | DISCORD_GUILD_ID            | [optional, but strongly recommended] The ID of the discord server to register commands. 1 hour delay if not set |
-  | GCLOUD_PROJECT              | The GCP Project ID                                                                                              |
   | DEFAULT_COMPUTE_ZONE        | [optional] The default zone to use for Compute Engine                                                           |
   | USER_ROLE_ID                | The Role ID of low-permission users who can list, start, and stop instances                                     |
   | MANAGER_ROLE_ID             | The Role ID of high-permission users who can directly run RCON commands                                         |
